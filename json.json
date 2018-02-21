@@ -1,0 +1,98 @@
+{
+  "subtitles": [
+    {
+      "begin": "41:55 -02:00",
+      "end": "30:42 -02:00",
+      "duration": "5000",
+      "text": [
+        {
+          "words": "Hello",
+          "translate": "привет"
+        },
+        {
+          "words": "id"
+        },
+        {
+          "words": "est"
+        }
+      ]
+    },
+    {
+      "begin": "41:55 -02:00",
+      "end": "30:42 -02:00",
+      "duration": "5000",
+      "text": [
+        {
+          "words": "Hello",
+          "translate": "привет"
+        },
+        {
+          "words": "id"
+        },
+        {
+          "words": "est"
+        }
+      ]
+    },
+    {
+      "begin": "20:42 -03:00",
+      "end": "27:21 -02:00",
+      "text": [
+        {
+          "words": "mollit"
+        },
+        {
+          "words": "sint"
+        },
+        {
+          "words": "irure"
+        }
+      ]
+    },
+    {
+      "begin": "13:22 -02:00",
+      "end": "41:01 -02:00",
+      "text": [
+        {
+          "words": "reprehenderit"
+        },
+        {
+          "words": "minim"
+        },
+        {
+          "words": "elit"
+        }
+      ]
+    },
+    {
+      "begin": "35:51 -03:00",
+      "end": "30:19 -03:00",
+      "text": [
+        {
+          "words": "ex"
+        },
+        {
+          "words": "cupidatat"
+        },
+        {
+          "words": "laborum"
+        }
+      ]
+    },
+    {
+      "begin": "24:03 -03:00",
+      "end": "00:45 -03:00",
+      "text": [
+        {
+          "words": "Lorem"
+        },
+        {
+          "words": "adipisicing"
+        },
+        {
+          "words": "elit"
+        }
+      ]
+    }
+  ]
+}
