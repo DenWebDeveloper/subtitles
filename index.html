@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SpeakStarter</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
     <link rel="stylesheet" href="subtitles.css">
 </head>
 <body>
@@ -49,10 +50,26 @@
     <div class="container-video__wrapper">
         <div id="video-player"></div>
         <div class="subtitles"></div>
-        <div class="subtitles-translate"></div>
     </div>
 </div>
+<div id="template-translates">
+    <div class="template-translate template-translate-1">
+        <ul>
+            <li>Translate1</li>
+            <li>Translate2</li>
+            <li>Translate3</li>
+        </ul>
+        <div class="template-translate__buttons">
+            <button type="button" class="template-translate__menu"></button>
+            <div class="template-translate__volumeon"></div>
+        </div>
+    </div>
+</div>
+
+
+
 <footer>Footer</footer>
+<script src="https://unpkg.com/tippy.js@2.2.3/dist/tippy.all.min.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

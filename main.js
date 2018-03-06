@@ -4,32 +4,104 @@ let {subtitles} = {
     'subtitles': [
         {
             'begin': '0',
-            'end': '20',
+            'end': '7',
             'text': [
                 {
-                    'words': '0Hello',
-                    'translate': '0привет'
+                    'word': '1Слово(0-7)',
+                    'translates': [{
+                        'translate': 'Перевод для першого слова',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Останній Перевод для першого слова',
+                        'precision': '30'
+                    },]
                 }, {
-                    'words': '1Hello',
-                    'translate': '1привет'
+                    'word': '2Слово',
+                    'translates': [{
+                        'translate': 'Перевод для Другого слова',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день1',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день1',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Останній Перевод для Другого слова',
+                        'precision': '30'
+                    },]
                 }, {
-                    'words': '2Hello',
-                    'translate': '2привет'
+                    'word': 'Hello3',
+                    'translates': [{
+                        'translate': 'Привет3',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день3',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день3',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Не точно3',
+                        'precision': '30'
+                    },]
                 }
             ]
         }, {
-            'begin': '21',
-            'end': '31  ',
+            'begin': '8',
+            'end': '15',
             'text': [
                 {
-                    'words': '9Hello',
-                    'translate': '15привет'
+                    'word': 'Hello12 8-15',
+                    'translates': [{
+                        'translate': 'Привет12',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день12',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день12',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Не точно12',
+                        'precision': '30'
+                    },]
                 }, {
-                    'words': 'id',
-                    'translate': 'привет'
+                    'word': 'Hello1123',
+                    'translates': [{
+                        'translate': 'Привет1',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день1',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день1',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Не точно12',
+                        'precision': '30'
+                    },]
                 }, {
-                    'words': 'est',
-                    'translate': 'привет'
+                    'word': 'Hello321',
+                    'translates': [{
+                        'translate': 'Привет23',
+                        'precision': '90'
+                    }, {
+                        'translate': 'Добрый день3',
+                        'precision': '70'
+                    }, {
+                        'translate': 'Очень добрый день3',
+                        'precision': '50'
+                    }, {
+                        'translate': 'Не точно3',
+                        'precision': '30'
+                    },]
                 }
             ]
         }, {
@@ -125,24 +197,33 @@ class Video {
 
     init() {
         this.onStateChange();
-        this.translate();
+        this.tooltipVideoStop();
         this.close();
 
         let videoPlayer = document.querySelector('#video-player iframe');
-        let containerVideo  = document.querySelector('.container-video');
+        let containerVideo = document.querySelector('.container-video');
 
         containerVideo.style.display = 'block';
-        videoPlayer.setAttribute('wmode','opaque');
+        videoPlayer.setAttribute('wmode', 'opaque');
+    }
+
+    tooltipVideoStop() {
+        let subtitlesContainer = document.querySelector('.subtitles');
+        subtitlesContainer.addEventListener('click', (e) => {
+            this.Player.pauseVideo();
+        });
     }
 
     translate() {
-        let subtitlesContainer = document.querySelector('.subtitles');
-        let subtitlesTranslate = document.querySelector('.subtitles-translate');
-        subtitlesContainer.addEventListener('click', (e) => {
-            subtitlesTranslate.style.display = 'block';
-            if(e.target.dataset.title) {
-                subtitlesTranslate.innerHTML = e.target.dataset.title;
-            }
+        this.templateTranslates = document.querySelector('#template-translates');
+        let text = '';
+        this.templateTranslates.innerHTML = "";
+        subtitles[this.numberPosition].text.forEach((elem, index) => {
+            elem.translates.forEach((elem) => {
+                text += `<li>${elem.translate}</li>`;
+            });
+            this.templateTranslates.innerHTML += `<div class="template-translate-${index}"><ul>${text}</ul><div class="template-translate__buttons"><button type="button" class="template-translate__menu"></button><div class="template-translate__volumeon"></div></div></div>`;
+            text = '';
         });
     }
 
@@ -152,10 +233,20 @@ class Video {
             if (data == 1) {
                 this.pause = false;
                 this.videoUpdate()
+                if(this.tippy) {
+                    this.tippyDestroy();
+                }
             }
             if (data == 2) {
                 this.pause = true;
             }
+        });
+    }
+
+    tippyDestroy() {
+        let elmentsTippy = document.querySelectorAll('.tippy-popper');
+        elmentsTippy.forEach((item)=>{
+            item.remove();
         });
     }
 
@@ -176,10 +267,23 @@ class Video {
 
     generateText(number) {
         this.updateText(false);
-        subtitles[number].text.forEach( (elem) => {
-            this.text += '<button class=\'btn-tooltip\' data-title=' + elem.translate + '>' + elem.words + '</button>';
+        subtitles[number].text.forEach((elem, index) => {
+            this.text += `<button class="btn-tooltip" data-position="${index}" title="title">${elem.word}</button>`;
         });
         this.updateText(true);
+        this.tippyUpdate();
+    }
+
+    tippyUpdate() {
+        this.translate();
+        this.tippy = tippy('.btn-tooltip', {
+            theme: 'speak-starter',
+            distance: 15,
+            arrow: true,
+            html: el => document.querySelector(`.template-translate-${el.dataset.position}`),
+            dynamicTitle: true,
+            trigger: 'click'
+        });
     }
 
     updateText(type) { //додає або удаляє текс якщо type = true то додаєм
@@ -204,9 +308,9 @@ class Video {
             else
                 i = k + 1;
         }
-        i === 0 ? 0: i--;
+        i === 0 ? 0 : i--;
         if (subtitles[i].begin <= searchData && subtitles[i].end >= searchData)
-            return i; // На выходе индекс искомого элемента.
+            return i;
         else
             return -1;
     }
@@ -215,61 +319,11 @@ class Video {
         let closeVideo = document.querySelector(".video-close");
         closeVideo.addEventListener('click', () => {
             this.Player.destroy();
-            let containerVideo  = document.querySelector('.container-video');
+            let containerVideo = document.querySelector('.container-video');
             containerVideo.style.display = 'none';
         });
     }
 }
 
-class MoveElement {
-    constructor(nameElement) {
-        this.element = document.querySelector(nameElement);
-
-        this.mousedown();
-        this.ondragstart();
-    }
-
-    mousedown() {
-        this.element.onmousedown = (e) => {
-            let coords = this.getCoords(this.element);
-            this.shiftX = e.pageX - coords.left;
-            this.shiftY = e.pageY - coords.top;
-
-            document.onmousemove = (e) => {
-                this.moveAt(e);
-            }
-
-            this.element.onmouseup = () => {
-                document.onmousemove = null;
-                this.element.onmouseup = null;
-            }
-
-            this.element.onmouseout = () => {
-                document.onmousemove = null;
-                this.element.onmouseup = null;
-            }
-        }
-    }
-
-    ondragstart() {
-        this.element.ondragstart = () => {
-            return false;
-        }
-    }
-
-    moveAt(e) {
-        this.element.style.left = e.pageX - this.shiftX + 'px';
-        this.element.style.top = e.pageY - this.shiftY + 'px';
-    }
-
-    getCoords() {   // кроме IE8-
-        let box = this.element.getBoundingClientRect();
-        return {
-            top: box.top + pageYOffset,
-            left: box.left + pageXOffset
-        }
-    }
-}
 
 videosYouTube();
-new MoveElement('.subtitles-translate');
