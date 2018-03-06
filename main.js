@@ -325,5 +325,6 @@ class Video {
     }
 }
 
-
-videosYouTube();
+document.addEventListener('load', ()=>{
+    videosYouTube();
+});
